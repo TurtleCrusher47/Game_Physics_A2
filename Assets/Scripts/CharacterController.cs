@@ -10,6 +10,8 @@ public class CharacterController : MonoBehaviour
 
     [SerializeField] private Animator targetAnimator;
 
+    [SerializeField] private Transform camera;
+
     private bool walk = false;
     
     // Update is called once per frame
@@ -17,16 +19,15 @@ public class CharacterController : MonoBehaviour
     {
         float horizontal = Input.GetAxisRaw("Horizontal");
         float vertical = Input.GetAxisRaw("Vertical");
-
         Vector3 direction = new Vector3(horizontal, 0f, vertical).normalized;
 
         if (direction.magnitude >= 0.1f)
         {
-            float targetAngle = Mathf.Atan2(direction.z, direction.x) * Mathf.Rad2Deg;
-
+            float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + camera.eulerAngles.y;
             this.hipJoint.targetRotation = Quaternion.Euler(0f, targetAngle, 0f);
 
-            this.hip.AddForce(direction * this.speed);
+            Vector3 moveDirection = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
+            this.hip.AddForce(moveDirection.normalized * this.speed);
 
             this.walk = true;
         }
