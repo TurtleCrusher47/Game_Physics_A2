@@ -44,8 +44,6 @@ public class PressurePlate : MonoBehaviour
         {
             ball.transform.position = ballPosition;
             ball.SetActive(true);
-
-            Debug.Log("Spawned");
         }
     }
 }
